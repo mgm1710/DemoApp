@@ -24,8 +24,13 @@ android {
 //            storePassword System.getenv("KEYSTORE_PASSWORD")
 //            keyAlias System.getenv("KEY_ALIAS")
 //            keyPassword System.getenv("KEY_PASSWORD")
-            storeFile file(project.hasProperty("keystoreFile") ? project.property("keystoreFile") : "MISSING")
+//            storeFile file(project.hasProperty("keystoreFile") ? project.property("keystoreFile") : "MISSING")
+            def ksFile = project.hasProperty("keystoreFile") ? project.property("keystoreFile") : "NOT_FOUND"
+            println "DEBUG: Using keystore file: $ksFile"
+            storeFile file(ksFile)
             storePassword project.property("keystorePassword")
+            def ksPass = project.property("keystorePassword")
+            println "DEBUG: Using keystore password: $ksPass"
             keyAlias project.property("keyAlias")
             keyPassword project.property("keyPassword")
         }
@@ -34,6 +39,7 @@ android {
 
     buildTypes {
         release {
+            println "DEBUG: Using signingConfig: ${signingConfigs.release.storeFile}"
             signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
